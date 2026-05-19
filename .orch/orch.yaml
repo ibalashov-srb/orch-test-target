@@ -1,0 +1,3 @@
+language: markdown
+test_commands:
+  - "true"
