@@ -43,4 +43,18 @@ func TestRunGrep(t *testing.T) {
 			t.Errorf("no_match: stdout = %q, want empty", got)
 		}
 	})
+
+	t.Run("single_file_match", func(t *testing.T) {
+		const matchLine = "beta"
+		path := tmpFile(t, "alpha\n"+matchLine+"\ngamma\n")
+		var out strings.Builder
+		code := runGrep(matchLine, path, nil, &out)
+		if code != 0 {
+			t.Errorf("single_file_match: exit code = %d, want 0", code)
+		}
+		want := path + ":2:" + matchLine
+		if got := out.String(); !strings.Contains(got, want) {
+			t.Errorf("single_file_match: stdout = %q, want it to contain %q", got, want)
+		}
+	})
 }
