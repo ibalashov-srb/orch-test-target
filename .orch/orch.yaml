@@ -1,7 +1,9 @@
-language: shell
+language: go
 test_commands:
-  - "bash test/hello_test.sh"
+  - "go test ./..."
 post_edit:
-  - "bash -n bin/hello"
-  - "bash -n test/hello_test.sh"
-  
+  - "gofmt -w cmd"
+shell_allowlist:
+  extra:
+    - go
+    - gofmt
