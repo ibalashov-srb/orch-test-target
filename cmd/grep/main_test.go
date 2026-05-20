@@ -58,6 +58,22 @@ func TestRunGrep(t *testing.T) {
 		}
 	})
 
+	t.Run("missing_file", func(t *testing.T) {
+		// Build a path inside a fresh temp dir and never create the file,
+		// so os.Open inside runGrep is guaranteed to fail. runGrep must
+		// report this with exit code 2 and write nothing to stdout.
+		// Stderr output is intentionally not captured or checked.
+		path := filepath.Join(t.TempDir(), "does_not_exist.txt")
+		var out strings.Builder
+		code := runGrep("anything", path, nil, &out)
+		if code != 2 {
+			t.Errorf("missing_file: exit code = %d, want 2", code)
+		}
+		if got := out.String(); got != "" {
+			t.Errorf("missing_file: stdout = %q, want empty", got)
+		}
+	})
+
 	t.Run("invalid_regex", func(t *testing.T) {
 		// A bad pattern must cause regexp.Compile to fail, which runGrep
 		// reports by returning exit code 2. The reader and writer are
