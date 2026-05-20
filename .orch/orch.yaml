@@ -2,7 +2,7 @@ language: go
 test_commands:
   - "go test ./..."
 post_edit:
-  - "gofmt -w cmd"
+  - "gofmt -w ."
 shell_allowlist:
   extra:
     - go
