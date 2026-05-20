@@ -1,22 +1,21 @@
 # Plan
 
-Add a single CONTRIBUTING.md file at the repository root containing the conventional sections (Reporting Issues, Submitting Changes, Commit Messages, Code Style) in plain Markdown, no badges, strictly under 60 lines. Since this is a one-file, no-dependency change, the plan consists of a single bead.
+Add a single new `CONTRIBUTING.md` at the repository root following the spec's content and formatting contract (H1 + four ordered H2 sections, hyphen lists, no badges/HTML, ≤59 lines, single trailing newline). No other files are touched. The scope is narrow enough that one coarse work item covers the entire spec surface.
 
-## Beads
+## Work items
 
-### b1 — docs: add CONTRIBUTING.md at repository root
+### WI-1 — docs: add CONTRIBUTING.md at repository root
 
 **Complexity:** trivial
 
-Create /CONTRIBUTING.md (alongside README.md) with a concise contributor guide in plain GitHub-Flavored Markdown. Includes a top-level '# Contributing' heading, a brief welcome paragraph referencing the README, and the sections '## Reporting Issues', '## Submitting Changes', '## Commit Messages', and '## Code Style' in that order, using ATX headings and hyphenated bullet lists. The file must contain no badges or inline images, no front-matter, and no HTML, ending in a single trailing newline. This is the only file added or modified; no other repo files are touched.
+Create `/CONTRIBUTING.md` covering issue reporting, PR workflow, commit-message conventions, and code style, as required by the spec's 'User-Visible Surface' and 'Section content requirements' sections. The file must conform to the spec's strict formatting contract (ATX headings, hyphen lists, no badges/HTML/front-matter, ≤59 lines, single trailing LF newline, UTF-8). No other files in the repo (`README.md`, `.gitignore`, `.smoke-probe`, `.orch/`) may be modified, per 'Implementation Notes' and 'Out of Scope'.
 
 **Acceptance:**
 
-- File `CONTRIBUTING.md` exists at the repository root.
-- `wc -l CONTRIBUTING.md` returns a value of 59 or less (strictly under 60 lines).
-- File contains, in order: a top-level `# Contributing` heading, a welcome paragraph mentioning the README, and `## Reporting Issues`, `## Submitting Changes`, `## Commit Messages`, and `## Code Style` sections using ATX-style headings.
-- `## Submitting Changes` covers fork → feature branch → descriptive commit → PR against `main`, and mentions that small, focused PRs are preferred.
-- `## Commit Messages` includes 2–3 bullets covering imperative mood, 72-character subject limit, and referencing issue numbers.
-- File contains no badge or inline-image Markdown (no `![...](...)` syntax) and no HTML blocks or YAML front-matter; unordered lists use hyphens.
-- No other files in the repository are created, modified, or deleted (README.md, .gitignore, .orch/, .smoke-probe unchanged).
+- `CONTRIBUTING.md` exists at the repository root; no other tracked files are added, modified, or deleted.
+- File begins with `# Contributing` followed by a welcome paragraph that mentions `README.md` by name.
+- File contains exactly four H2 sections in this order: `## Reporting Issues`, `## Submitting Changes`, `## Commit Messages`, `## Code Style`.
+- `## Reporting Issues` lists searching existing issues, providing reproduction steps, and including environment details; `## Submitting Changes` describes the fork → feature branch → descriptive commit → PR-against-`main` workflow and notes a preference for small, focused PRs; `## Commit Messages` contains three bullets covering imperative mood, ≤72-char subject, and `#N` issue references; `## Code Style` is a brief note to follow existing conventions.
+- All unordered list items use `-` markers; no `*` or `+` list markers appear; no `![…](…)` image/badge syntax, raw HTML blocks, or YAML front-matter are present.
+- `wc -l CONTRIBUTING.md` reports a value ≤ 59, the file is valid UTF-8 with LF line endings, and it ends with exactly one trailing newline (no blank trailing lines).
 
