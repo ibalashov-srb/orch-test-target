@@ -57,4 +57,16 @@ func TestRunGrep(t *testing.T) {
 			t.Errorf("single_file_match: stdout = %q, want it to contain %q", got, want)
 		}
 	})
+
+	t.Run("invalid_regex", func(t *testing.T) {
+		// A bad pattern must cause regexp.Compile to fail, which runGrep
+		// reports by returning exit code 2. The reader and writer are
+		// irrelevant here: runGrep should bail before touching either.
+		// Stderr output is intentionally not captured or checked.
+		var out strings.Builder
+		code := runGrep("[invalid", "", strings.NewReader(""), &out)
+		if code != 2 {
+			t.Errorf("invalid_regex: exit code = %d, want 2", code)
+		}
+	})
 }
