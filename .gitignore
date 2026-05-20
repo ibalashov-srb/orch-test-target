@@ -3,3 +3,7 @@
 .orch/spec.draft.md
 .orch/checkpoint.json
 .orch/artifacts/
+
+# Orchestrator scratch (F-019 BR-019-01)
+*.test
+*.out
