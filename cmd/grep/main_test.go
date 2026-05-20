@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -25,4 +26,21 @@ func tmpFile(t *testing.T, content string) string {
 		}
 	})
 	return path
+}
+
+// TestRunGrep is the table-driven entry point for runGrep behaviour.
+// Each sub-test sets up its own input (via tmpFile when file mode is
+// exercised) and asserts on runGrep's exit code and captured stdout.
+func TestRunGrep(t *testing.T) {
+	t.Run("no_match", func(t *testing.T) {
+		path := tmpFile(t, "alpha\nbeta\ngamma\n")
+		var out strings.Builder
+		code := runGrep("zzz", path, nil, &out)
+		if code != 1 {
+			t.Errorf("no_match: exit code = %d, want 1", code)
+		}
+		if got := out.String(); got != "" {
+			t.Errorf("no_match: stdout = %q, want empty", got)
+		}
+	})
 }
