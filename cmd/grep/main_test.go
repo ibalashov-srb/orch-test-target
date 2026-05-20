@@ -74,6 +74,27 @@ func TestRunGrep(t *testing.T) {
 		}
 	})
 
+	t.Run("stdin_match", func(t *testing.T) {
+		// In stdin mode (filePath == ""), runGrep should read from the
+		// provided io.Reader and emit matching lines without a filename
+		// prefix: "<lineno>:<line>\n".
+		const matchLine = "beta"
+		in := strings.NewReader(matchLine + "\nalpha\ngamma\n")
+		var out strings.Builder
+		code := runGrep(matchLine, "", in, &out)
+		if code != 0 {
+			t.Errorf("stdin_match: exit code = %d, want 0", code)
+		}
+		want := "1:" + matchLine
+		if got := out.String(); !strings.Contains(got, want) {
+			t.Errorf("stdin_match: stdout = %q, want it to contain %q", got, want)
+		}
+		// Guard against a stray filename prefix sneaking in.
+		if got := out.String(); strings.Contains(got, ":1:"+matchLine) {
+			t.Errorf("stdin_match: stdout = %q, must not contain a filename prefix", got)
+		}
+	})
+
 	t.Run("invalid_regex", func(t *testing.T) {
 		// A bad pattern must cause regexp.Compile to fail, which runGrep
 		// reports by returning exit code 2. The reader and writer are
