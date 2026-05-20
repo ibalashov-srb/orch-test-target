@@ -1,12 +1,13 @@
 // Command grep is a minimal grep-style line scanner.
 //
-// This file currently provides the testable entry point runGrep. A thin
-// main() wrapper that parses positional arguments (and routes os.Stdin /
-// os.Stdout through to runGrep) is added in a subsequent change.
+// The testable entry point is runGrep; main() is a thin wrapper that parses
+// positional arguments via the flag package and routes os.Stdin / os.Stdout
+// through to runGrep.
 package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -81,10 +82,25 @@ func runGrep(pattern, filePath string, in io.Reader, out io.Writer) int {
 	return 0
 }
 
-// main is a minimal placeholder so this file compiles as package main.
-// A full argument-parsing implementation is added in a follow-up bead;
-// adding it here would require importing `flag`, which is outside this
-// bead's stdlib-import allowlist.
+// main parses positional arguments and dispatches to runGrep.
+//
+// Usage: grep <pattern> [file]
+//
+// With no arguments, a usage message is written to stderr and the process
+// exits with code 2. With one argument, runGrep reads from stdin; with two,
+// it reads from the named file. The process exit code is whatever runGrep
+// returns (0 = match, 1 = no match, 2 = error).
 func main() {
-	os.Exit(runGrep("", "", os.Stdin, os.Stdout))
+	flag.Parse()
+	args := flag.Args()
+	if len(args) < 1 {
+		fmt.Fprintln(os.Stderr, "usage: grep <pattern> [file]")
+		os.Exit(2)
+	}
+	pattern := args[0]
+	filePath := ""
+	if len(args) >= 2 {
+		filePath = args[1]
+	}
+	os.Exit(runGrep(pattern, filePath, os.Stdin, os.Stdout))
 }
