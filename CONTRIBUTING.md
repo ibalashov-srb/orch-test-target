@@ -1,29 +1,45 @@
 # Contributing
 
-Thanks for your interest in improving this project! Please read `README.md` first to get familiar with the project's purpose and setup before contributing.
+Welcome! We're glad you want to contribute to this Go project.
+
+## Prerequisites
+
+- Go 1.22 or newer installed on your system.
+- Clone the repository: `git clone https://github.com/ibalashov-srb/orch-test-target.git`
+- Verify your setup: `go build ./...`
+
+## Running Tests
+
+Run the full test suite with:
+
+```
+go test ./...
+```
+
+Tests live alongside the packages they cover. Key locations include
+`cmd/grep/` for the grep command and `doc_test.go` at the repo root.
 
 ## Reporting Issues
 
-- Search existing issues first to avoid filing duplicates.
-- Provide clear reproduction steps so maintainers can confirm the behavior.
-- Include environment details, such as your OS and the runtime/language version you are using.
+- Search existing issues before filing a new one to avoid duplicates.
+- Include clear reproduction steps so maintainers can confirm the problem.
+- State your Go version (`go version`) and operating system version.
 
 ## Submitting Changes
 
 - Fork the repository to your own account.
 - Create a feature branch off `main` for your work.
-- Write descriptive commits that explain the intent of each change.
 - Open a pull request against `main` when your branch is ready for review.
-- Prefer small, focused PRs over large, sprawling ones — they are easier to review and merge.
+- Prefer small, focused PRs — they are easier to review and merge.
 
 ## Commit Messages
 
-- Use the imperative mood in the subject line (for example, "Add", "Fix", "Update").
+- Write subjects in the imperative mood ("Add", "Fix", "Remove").
 - Keep the subject line to 72 characters or fewer.
-- Reference related issues using `#N` (for example, `Fixes #42`) when applicable.
+- Reference related issues with `Fixes #N` (e.g., `Fixes #42`) when applicable.
 
 ## Code Style
 
-- Match the style of the surrounding code; consistency matters more than personal preference.
-- Keep changes minimal and avoid unrelated reformatting in the same commit.
-- Run any available formatters or linters before submitting your changes.
+- Format all code with `go fmt ./...` before submitting.
+- Run `go vet ./...` and resolve any reported issues.
+- Do not include unrelated reformatting in the same commit as functional changes.
