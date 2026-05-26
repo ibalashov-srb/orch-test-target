@@ -1,29 +1,29 @@
 # Contributing
 
-Thanks for your interest in improving this project! Please read `README.md` first to get familiar with the project's purpose and setup before contributing.
+Thanks for helping improve `orch-test-target`, a small Go CLI project that
+currently provides a minimal `grep`-like command. Start with `README.md` for
+the project overview, usage, output format, and exit-code behavior.
 
-## Reporting Issues
+## Prerequisites
 
-- Search existing issues first to avoid filing duplicates.
-- Provide clear reproduction steps so maintainers can confirm the behavior.
-- Include environment details, such as your OS and the runtime/language version you are using.
+- Go 1.22 or newer.
+- A working shell for running the validation commands below.
 
-## Submitting Changes
+## Making changes
 
-- Fork the repository to your own account.
-- Create a feature branch off `main` for your work.
-- Write descriptive commits that explain the intent of each change.
-- Open a pull request against `main` when your branch is ready for review.
-- Prefer small, focused PRs over large, sprawling ones — they are easier to review and merge.
+- Keep changes small and focused.
+- Match the style of the surrounding Go code and documentation.
+- Update `README.md` when user-facing behavior changes.
+- Prefer clear commit messages that describe the intent of the change.
 
-## Commit Messages
+## Validate before submitting
 
-- Use the imperative mood in the subject line (for example, "Add", "Fix", "Update").
-- Keep the subject line to 72 characters or fewer.
-- Reference related issues using `#N` (for example, `Fixes #42`) when applicable.
+Run these commands from the repository root:
 
-## Code Style
+```sh
+go test ./...
+go run ./cmd/grep <pattern> [file|-]
+```
 
-- Match the style of the surrounding code; consistency matters more than personal preference.
-- Keep changes minimal and avoid unrelated reformatting in the same commit.
-- Run any available formatters or linters before submitting your changes.
+Use the `go run` command to manually confirm CLI behavior when your change
+affects input handling, output, or exit codes.
