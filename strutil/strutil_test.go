@@ -1,6 +1,10 @@
-package strutil
+package strutil_test
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/ibalashov-srb/orch-test-target/strutil"
+)
 
 func TestReverse(t *testing.T) {
 	cases := []struct {
@@ -16,7 +20,7 @@ func TestReverse(t *testing.T) {
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			if got := Reverse(tc.input); got != tc.want {
+			if got := strutil.Reverse(tc.input); got != tc.want {
 				t.Errorf("Reverse(%q) = %q, want %q", tc.input, got, tc.want)
 			}
 		})
@@ -39,7 +43,7 @@ func TestIsPalindrome(t *testing.T) {
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			if got := IsPalindrome(tc.input); got != tc.want {
+			if got := strutil.IsPalindrome(tc.input); got != tc.want {
 				t.Errorf("IsPalindrome(%q) = %v, want %v", tc.input, got, tc.want)
 			}
 		})
@@ -61,7 +65,7 @@ func TestCountVowels(t *testing.T) {
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			if got := CountVowels(tc.input); got != tc.want {
+			if got := strutil.CountVowels(tc.input); got != tc.want {
 				t.Errorf("CountVowels(%q) = %d, want %d", tc.input, got, tc.want)
 			}
 		})
@@ -84,7 +88,7 @@ func TestCapitalize(t *testing.T) {
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			if got := Capitalize(tc.input); got != tc.want {
+			if got := strutil.Capitalize(tc.input); got != tc.want {
 				t.Errorf("Capitalize(%q) = %q, want %q", tc.input, got, tc.want)
 			}
 		})
