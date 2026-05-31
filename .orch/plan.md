@@ -1,69 +1,19 @@
 # Plan
 
-Introduce a minimal Go module at the repo root and a self-contained `cmd/grep` CLI that scans a file or stdin for regexp matches, plus in-process tests and a README usage section. Work is split into four coarse contract surfaces: module scaffolding, the grep CLI/`runGrep` behavior, the table-driven test suite, and the README documentation update.
+Add a new exported `Multiply(a, b int) int` helper to the root `orchtest` package together with its table-driven `TestMultiply`. Both files are net-new at the repo root; no existing file is touched. Per TD-134, the helper and its colocated test ship as a single cohesive work item.
 
 ## Work items
 
-### WI-1 — chore(gomod): initialize module github.com/ibalashov-srb/orch-test-target on Go 1.22
+### WI-1 — feat(orchtest): add Multiply integer helper with table-driven test
 
 **Complexity:** trivial
 
-Create a top-level go.mod declaring the module path and Go 1.22 toolchain so the repository becomes a valid Go module that `go test ./...` can resolve. The spec's 'go.mod' section mandates this exact module path with no require stanzas (standard library only, no go.sum). This is the foundation that makes every other work_item buildable and testable.
+Introduces the exported `Multiply(a, b int) int` function in the root `orchtest` package, returning `a * b` with native Go int semantics, alongside a table-driven `TestMultiply` covering positive, negative, mixed-sign, zero (both positions), identity, and large-value cases. Both files (`multiply.go` and `multiply_test.go`) are new at the repo root and share `package orchtest` for consistency with the existing `doc_test.go`. Together they form one cohesive deliverable per the spec sections 'User-Visible Surface' and 'Files to Create'.
 
 **Acceptance:**
 
-- `go.mod` exists at the repo root with first line `module github.com/ibalashov-srb/orch-test-target`
-- `go.mod` declares `go 1.22`
-- `go.mod` contains no `require` directives and no `go.sum` is added to the repo
-- `go mod verify` succeeds against the committed `go.mod`
-- `go list ./...` runs without error from the repo root
+- `multiply.go` exists at repo root declaring `package orchtest` and exporting `func Multiply(a, b int) int` with a doc comment, whose body returns `a * b` and requires no imports.
+- `multiply_test.go` exists at repo root declaring `package orchtest` and defining `TestMultiply`, a table-driven test using an anonymous struct slice plus `t.Run` sub-tests that covers all seven named cases from the spec (both_positive=12, both_negative=12, mixed_sign=-12, zero_times_value=0, value_times_zero=0, identity=99, large_values=999000).
+- `go test ./...` passes from a clean checkout with all seven `TestMultiply/<name>` sub-tests reported as PASS, and `gofmt -l multiply.go multiply_test.go` prints no output.
+- No file other than `multiply.go` and `multiply_test.go` is added or modified (in particular `doc_test.go`, `go.mod`, and everything under `cmd/grep/` are byte-identical to main).
 
-### WI-2 — feat(grep): add cmd/grep CLI with testable runGrep entry point
-
-**Complexity:** small
-
-Create `cmd/grep/main.go` implementing the grep-style scanner described in the spec's 'cmd/grep/main.go' section. Expose a `runGrep(pattern, filePath string, in io.Reader, out io.Writer) int` function that returns the documented exit codes, with `main()` as a thin wrapper around `flag.Parse()` and `os.Exit(runGrep(...))`. Uses only the standard library (`bufio`, `fmt`, `io`, `os`, `regexp`, `flag`).
-
-**Acceptance:**
-
-- `go build ./cmd/grep` produces a binary with no external dependencies (only stdlib imports in the source)
-- Invoking the binary as `grep <pattern> <file>` prints every matching line as `<filename>:<lineno>:<line>` with 1-based line numbers
-- Invoking the binary with no file argument, or with `-` as the file argument, reads from stdin and prints `<lineno>:<line>` with no filename prefix
-- Process exits 0 when at least one line matched, exits 1 when input was read successfully but no line matched
-- Process exits 2 when the pattern fails `regexp.Compile`, when the file path cannot be opened, or when no pattern argument is supplied; an explanatory message is written to stderr in each error case
-- `runGrep` is callable from another file in `package main` with the signature `(pattern, filePath string, in io.Reader, out io.Writer) int`
-
-### WI-3 — test(grep): add table-driven runGrep tests covering match, no-match, errors, stdin
-
-**Complexity:** small
-
-Create `cmd/grep/main_test.go` in `package main` with a `TestRunGrep` table-driven test that exercises `runGrep` in-process via `strings.NewReader` and `strings.Builder`, plus a `tmpFile` helper that registers `t.Cleanup`. The five required scenarios from the spec's test table must each be a named sub-test asserting both the integer exit code and the expected stdout content (or emptiness).
-
-**Acceptance:**
-
-- `go test ./cmd/grep` passes with at least the five sub-tests: `single_file_match`, `no_match`, `invalid_regex`, `missing_file`, `stdin_match`
-- `single_file_match` writes a 3-line temp file, runs `runGrep` against it, asserts exit code 0 and that captured stdout contains `<tmpfile-path>:<lineno>:<matching-line>`
-- `no_match` runs against a temp file with no matching line, asserts exit code 1 and empty captured stdout
-- `invalid_regex` calls `runGrep` with pattern `"[invalid"` and asserts exit code 2
-- `missing_file` calls `runGrep` with a non-existent path and asserts exit code 2 with empty captured stdout
-- `stdin_match` calls `runGrep` with `filePath==""` and `in=strings.NewReader(...)`, asserts exit code 0 and that captured stdout contains `1:<matching-line>` with no filename prefix
-- `go test ./...` from the repo root passes
-
-### WI-4 — docs(readme): document grep tool usage and exit codes
-
-**Complexity:** trivial
-
-Append a `## grep` section to `README.md` describing how to invoke the new tool and what its exit codes mean, as specified in the spec's 'README.md update' section. The section must include a fenced code block with the `go run ./cmd/grep <pattern> [file|-]` invocation form and an explicit enumeration of the 0/1/2 exit-code contract.
-
-**Acceptance:**
-
-- `README.md` contains a new `## grep` heading appended after the existing content (existing lines are preserved verbatim)
-- The section contains a fenced code block showing `go run ./cmd/grep <pattern> [file|-]`
-- The section explains the output format: `filename:lineno:` for file input, `lineno:` for stdin input
-- The section enumerates all three exit codes: 0 = match found, 1 = no match, 2 = usage/file error
-
-## Dependencies
-
-- WI-2 depends on WI-1
-- WI-3 depends on WI-1
-- WI-3 depends on WI-2
