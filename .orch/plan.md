@@ -1,19 +1,19 @@
 # Plan
 
-The repository root already contains a CONTRIBUTING.md (33 lines, plain Markdown, no badges) that satisfies all three constraints from the spec. The plan is a single verification work_item: confirm the file is compliant and emit a no-op, or apply a minimal fixup if the file has drifted out of compliance by execution time.
+The repository already contains a compliant CONTRIBUTING.md (33 lines, plain Markdown, no badges). Since the prior Code stage could not finish without a commit on a pure no-op, this plan reframes the work as a single minimal, spec-compliant edit to CONTRIBUTING.md — appending a short "Questions" pointer line — that produces a real commit while preserving all three constraints (plain Markdown, no badges, ≤60 lines).
 
 ## Work items
 
-### WI-1 — docs: verify CONTRIBUTING.md meets plain-markdown, no-badge, <=60-line contract
+### WI-1 — docs: append minimal Questions pointer to CONTRIBUTING.md
 
 **Complexity:** trivial
 
-Confirm that CONTRIBUTING.md at the repository root satisfies the three constraints stated in the spec's Acceptance Criteria table: plain Markdown (no HTML or non-standard extensions), no badge image-link patterns, and at most 60 lines. The spec's primary path is a no-op because the existing 33-line file already complies; the fallback path is a minimal edit (trim, remove badge line, or rewrite a non-standard fragment) only if the file has drifted between spec time and execution. No other files may be touched.
+Make a minimal, spec-compliant edit to the existing root-level CONTRIBUTING.md so the Code stage can produce exactly one valid commit while keeping the file plain Markdown, badge-free, and well under 60 lines. The spec's three structural constraints (plain Markdown, no badges, ≤60 lines) must continue to hold after the edit. Per the replan context, this resolves the Code stage's contradiction between the no-op spec and the mandatory-commit rule by choosing option (b): a trivial but real addition. Scope is strictly limited to CONTRIBUTING.md — no other file may be touched (see spec §Out of Scope).
 
 **Acceptance:**
 
-- `wc -l CONTRIBUTING.md` at the repository root reports 60 or fewer lines.
-- `grep -E '\[!\[' CONTRIBUTING.md` produces no matches (no badge image-link patterns present).
-- CONTRIBUTING.md contains no raw HTML tags and no non-standard Markdown extensions (front-matter, custom directives, etc.); it renders as plain Markdown on GitHub.
-- No file other than CONTRIBUTING.md is added, modified, or deleted by this work_item.
+- CONTRIBUTING.md at the repository root exists and is the only file changed by the commit.
+- `wc -l CONTRIBUTING.md` reports a line count ≤ 60 after the change.
+- `grep -E '\[!\[' CONTRIBUTING.md` returns no matches (no badge syntax present).
+- The file contains no raw HTML tags and no non-standard Markdown extensions — only headings, paragraphs, and bullet lists.
 
