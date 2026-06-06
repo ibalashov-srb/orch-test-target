@@ -1,29 +1,28 @@
 # Contributing
 
-Thanks for your interest in improving this project! Please read `README.md` first to get familiar with the project's purpose and setup before contributing.
+Thanks for your interest in contributing! Please read `README.md` first to
+understand the project's purpose and how to set it up locally.
 
 ## Reporting Issues
 
 - Search existing issues first to avoid filing duplicates.
-- Provide clear reproduction steps so maintainers can confirm the behavior.
-- Include environment details, such as your OS and the runtime/language version you are using.
+- Include clear reproduction steps so maintainers can confirm the behavior.
+- Provide environment details such as your OS and runtime or language version.
 
 ## Submitting Changes
 
-- Fork the repository to your own account.
-- Create a feature branch off `main` for your work.
-- Write descriptive commits that explain the intent of each change.
-- Open a pull request against `main` when your branch is ready for review.
-- Prefer small, focused PRs over large, sprawling ones — they are easier to review and merge.
+- Fork the repository and create a feature branch off `main`.
+- Keep pull requests small and focused on a single concern.
+- Open the pull request against `main` when your branch is ready for review.
 
 ## Commit Messages
 
-- Use the imperative mood in the subject line (for example, "Add", "Fix", "Update").
+- Write subject lines in the imperative mood (e.g. "Add", "Fix", "Update").
 - Keep the subject line to 72 characters or fewer.
-- Reference related issues using `#N` (for example, `Fixes #42`) when applicable.
+- Reference related issues with `#N` (e.g. `Fixes #42`) where applicable.
 
 ## Code Style
 
-- Match the style of the surrounding code; consistency matters more than personal preference.
-- Keep changes minimal and avoid unrelated reformatting in the same commit.
-- Run any available formatters or linters before submitting your changes.
+- Match the style of the surrounding code rather than imposing a preference.
+- Keep diffs minimal and avoid unrelated reformatting in the same commit.
+- Run all available formatters and linters before submitting your changes.
