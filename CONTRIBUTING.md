@@ -2,6 +2,10 @@
 
 Thanks for your interest in improving this project! Please read `README.md` first to get familiar with the project's purpose and setup before contributing.
 
+## Building
+
+This project uses standard Go tooling. From the repo root, run `go build ./...` to compile all packages. To run the full test suite, use `go test ./...`.
+
 ## Reporting Issues
 
 - Search existing issues first to avoid filing duplicates.
