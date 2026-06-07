@@ -1,9 +1,8 @@
-language: go
+# ts-bead-test branch: declare language ts so the bead routes to the TS (node) worker
+# pool. Dependency-free tests (Node 20 built-in runner) to fit restricted worker egress.
+language: ts
 test_commands:
-  - "go test ./..."
-post_edit:
-  - "gofmt -w ."
+  - "node --test"
 shell_allowlist:
   extra:
-    - go
-    - gofmt
+    - node
