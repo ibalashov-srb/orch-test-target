@@ -27,3 +27,13 @@ Thanks for your interest in improving this project! Please read `README.md` firs
 - Match the style of the surrounding code; consistency matters more than personal preference.
 - Keep changes minimal and avoid unrelated reformatting in the same commit.
 - Run any available formatters or linters before submitting your changes.
+
+## Running Tests
+
+To run the full test suite, execute the following command from the repository root:
+
+```bash
+go test ./...
+```
+
+All tests must pass before a pull request can be merged.
